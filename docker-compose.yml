@@ -1,0 +1,22 @@
+services:
+
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: compose
+            args:
+                UID: ${UID}
+                GID: ${GID}
+        volumes:
+            - ./html:/var/www/html/:rw
+        ports:
+            -   target: 8000
+                published: 8000
+        networks:
+            private:
+
+networks:
+    private:
+        name: otus-microservice-architecture-2025
+        driver: bridge
