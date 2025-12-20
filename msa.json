@@ -1,0 +1,27 @@
+{
+    "info": {
+        "name": "Microservice_Architecture_2025",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_postman_id": "8e9b79c4-4bcb-4f11-9b0d-aaa000000001"
+    },
+    "item": [
+        {
+            "name": "Health",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://arch.homework/health",
+                    "protocol": "http",
+                    "host": [
+                        "arch",
+                        "homework"
+                    ],
+                    "path": [
+                        "health"
+                    ]
+                }
+            }
+        }
+    ]
+}
