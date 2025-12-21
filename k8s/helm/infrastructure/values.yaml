@@ -1,0 +1,3 @@
+postgres:
+    args:
+        - "--max_connections=200"

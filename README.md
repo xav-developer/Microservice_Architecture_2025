@@ -25,7 +25,7 @@ docker compose down
 # Build
 
 ```shell
-docker build . --platform=linux/amd64 --tag=msa:latest
+docker build . --platform=linux/amd64 --tag=phexel/msa:latest
 ```
 
 ```shell
@@ -48,4 +48,38 @@ kubectl apply -f msa.yaml
 
 ```shell
 kubectl delete -f msa.yaml
+```
+
+# Helm install
+
+# Infrastructure
+
+```shell
+helm install health-infrastructure k8s/helm/infrastructure
+```
+
+# Application
+
+## Secret
+
+```shell
+kubectl apply -f k8s/secret.yaml
+```
+
+## Application
+
+```shell
+helm install health-application k8s/helm/application
+```
+
+# newman
+
+```shell
+newman run crud.json
+```
+
+# Helm uninstall
+
+```shell
+helm uninstall health-application health-infrastructure
 ```
