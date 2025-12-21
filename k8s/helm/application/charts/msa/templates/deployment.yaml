@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: {{ include "msa.fullname" . }}
+    labels:
+        {{- include "msa.labels" . | nindent 8 }}
+spec:
+    replicas: {{ .Values.replicaCount }}
+    selector:
+        matchLabels:
+            {{- include "msa.selectorLabels" . | nindent 12 }}
+    template:
+        metadata:
+            labels:
+                {{- include "msa.labels" . | nindent 16 }}
+        spec:
+            initContainers:
+                -   name: migrate
+                    image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+                    imagePullPolicy: {{ .Values.image.pullPolicy }}
+                    command:
+                        - sh
+                        - -c
+                        - php artisan migrate --force
+                    volumeMounts:
+                        -   name: env
+                            mountPath: /var/www/html/.env
+                            subPath: .env
+                            readOnly: true
+            containers:
+                -   name: {{ .Chart.Name }}
+                    image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+                    imagePullPolicy: {{ .Values.image.pullPolicy }}
+                    ports:
+                        -   name: http
+                            containerPort: {{ .Values.service.targetPort }}
+                            protocol: TCP
+                    {{- with .Values.startupProbe }}
+                    startupProbe:
+                        {{- toYaml . | nindent 24 }}
+                    {{- end }}
+                    {{- with .Values.livenessProbe }}
+                    livenessProbe:
+                        {{- toYaml . | nindent 24 }}
+                    {{- end }}
+                    {{- with .Values.readinessProbe }}
+                    readinessProbe:
+                        {{- toYaml . | nindent 24 }}
+                    {{- end }}
+                    {{- with .Values.resources }}
+                    resources:
+                        {{- toYaml . | nindent 24 }}
+                    {{- end }}
+                    volumeMounts:
+                        -   name: env
+                            mountPath: /var/www/html/.env
+                            subPath: .env
+                            readOnly: true
+            volumes:
+                -   name: env
+                    secret:
+                        secretName: {{ .Values.env }}
