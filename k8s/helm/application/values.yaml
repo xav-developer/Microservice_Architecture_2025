@@ -1,2 +1,2 @@
-msa:
-    env: health-application-msa-env
+laravel:
+    env: msa-application-laravel-env
