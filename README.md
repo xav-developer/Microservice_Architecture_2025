@@ -55,7 +55,7 @@ kubectl delete -f msa.yaml
 # Infrastructure
 
 ```shell
-helm install health-infrastructure k8s/helm/infrastructure
+helm upgrade --install msa-infrastructure k8s/helm/infrastructure
 ```
 
 # Application
@@ -69,7 +69,7 @@ kubectl apply -f k8s/secret.yaml
 ## Application
 
 ```shell
-helm install health-application k8s/helm/application
+helm upgrade --install msa-application k8s/helm/application
 ```
 
 # newman
@@ -81,5 +81,5 @@ newman run crud.json
 # Helm uninstall
 
 ```shell
-helm uninstall health-application health-infrastructure
+helm uninstall msa-application msa-infrastructure
 ```
