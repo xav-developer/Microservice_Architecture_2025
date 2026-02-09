@@ -1,0 +1,6 @@
+profile:
+
+    env: laravel-env
+
+    ingress:
+        enabled: false

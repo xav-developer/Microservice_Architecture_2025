@@ -22,64 +22,94 @@ docker compose up -d
 docker compose down
 ```
 
-# Build
-
-```shell
-docker build . --platform=linux/amd64 --tag=phexel/msa:latest
-```
-
-```shell
-docker build . --platform=linux/arm64 --tag=msa:latest
-```
-
 # K8S
 
-```shell
-curl http://arch.homework/health
-```
+## Build
+
+### Authorization
 
 ```shell
-newman run msa.json
+make build-authorization
 ```
+
+### Profile
 
 ```shell
-kubectl apply -f msa.yaml
+make build-profile
 ```
+
+## Push
+
+### Authorization
 
 ```shell
-kubectl delete -f msa.yaml
+make push-authorization
 ```
 
-# Helm install
-
-# Infrastructure
+### Profile
 
 ```shell
-helm upgrade --install msa-infrastructure k8s/helm/infrastructure
+make push-profile
 ```
 
-# Application
+# Helm
+
+## Infrastructure
+
+```shell
+helm upgrade \
+  --install \
+  --create-namespace \
+  --namespace fa \
+  infrastructure k8s/helm/infrastructure
+```
 
 ## Secret
 
 ```shell
-kubectl apply -f k8s/secret.yaml
+kubectl apply \
+  --namespace fa \
+  --filename k8s/secret.yaml
 ```
 
 ## Application
 
+### Authorization
+
 ```shell
-helm upgrade --install msa-application k8s/helm/application
+helm upgrade \
+  --install \
+  --create-namespace \
+  --namespace fa \
+  authorization k8s/helm/authorization
 ```
 
-# newman
+### Profile
 
 ```shell
-newman run crud.json
+helm upgrade \
+  --install \
+  --create-namespace \
+  --namespace fa \
+  profile k8s/helm/profile
+```
+
+### Ingress
+
+```shell
+kubectl apply -f k8s/fa.yaml
 ```
 
 # Helm uninstall
 
 ```shell
-helm uninstall msa-application msa-infrastructure
+helm uninstall \
+  --namespace fa \
+  authorization \
+  profile \
+  infrastructure
+```
+
+```shell
+kubectl delete ns fa
 ```

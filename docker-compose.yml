@@ -1,18 +1,36 @@
 services:
 
-    php:
+    authorization:
         build:
-            context: .
+            context: application/authorization
             dockerfile: Dockerfile
             target: compose
             args:
                 UID: ${UID}
                 GID: ${GID}
         volumes:
-            - ./html:/var/www/html/:rw
+            - ./application/authorization/html:/var/www/html/:rw
         ports:
             -   target: 8000
-                published: 8000
+                published: 8001
+        depends_on:
+            - postgres
+        networks:
+            private:
+
+    profile:
+        build:
+            context: application/profile
+            dockerfile: Dockerfile
+            target: compose
+            args:
+                UID: ${UID}
+                GID: ${GID}
+        volumes:
+            - ./application/profile/html:/var/www/html/:rw
+        ports:
+            -   target: 8000
+                published: 8002
         depends_on:
             - postgres
         networks:
