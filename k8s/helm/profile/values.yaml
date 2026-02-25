@@ -2,12 +2,3 @@ profile:
 
     env: laravel-env
     rr: laravel-rr
-
-    ingress:
-        enabled: true
-        className: "nginx"
-        hosts:
-            -   host: arch.homework
-                paths:
-                    -   path: /profile
-                        pathType: Prefix
