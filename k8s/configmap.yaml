@@ -28,7 +28,7 @@ data:
             gzip:
                 level: 6
             pool:
-                num_workers: 5
+                num_workers: 4
                 supervisor:
                     exec_ttl: 30s
         logs:
