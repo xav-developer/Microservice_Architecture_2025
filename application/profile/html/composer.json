@@ -8,7 +8,10 @@
     "require": {
         "php": "^8.4",
         "laravel/framework": "^12.0",
+        "laravel/octane": "^2.14",
         "laravel/tinker": "^2.10.1",
+        "spiral/roadrunner-cli": "^2.7",
+        "spiral/roadrunner-http": "^4.0",
         "swagger-api/swagger-ui": "^5.19",
         "zircote/swagger-php": "^5.0"
     },

@@ -20,13 +20,19 @@ RUN apt-get update \
     && apt-get install --yes --no-install-recommends libpq-dev postgresql-client-18 \
     && docker-php-ext-install pdo_pgsql \
     && docker-php-ext-enable pdo_pgsql \
+    && docker-php-ext-install sockets \
+    && docker-php-ext-enable sockets \
+    && pecl install xdebug-3.4.3 \
+    && docker-php-ext-enable xdebug \
     && apt-get clean && apt-get autoclean && apt-get autoremove --purge --yes
 
 COPY docker/build/php/usr/ /usr/
 
 WORKDIR /var/www/html/
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+COPY --from=ghcr.io/roadrunner-server/roadrunner:2025.1.7 /usr/bin/rr /usr/local/bin/rr
+
+CMD ["/usr/local/bin/rr", "--config", "/var/www/html/.rr.yaml", "serve"]
 
 #
 # Compose
