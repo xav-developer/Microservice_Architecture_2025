@@ -105,7 +105,9 @@ helm upgrade \
 ### Ingress
 
 ```shell
-kubectl apply -f k8s/fa.yaml
+kubectl apply \
+  --namespace fa \
+  --filename k8s/fa.yaml
 ```
 
 # Helm uninstall
