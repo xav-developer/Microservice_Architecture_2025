@@ -64,6 +64,14 @@ helm upgrade \
   infrastructure k8s/helm/infrastructure
 ```
 
+## ConfigMap
+
+```shell
+kubectl apply \
+  --namespace fa \
+  --filename k8s/configmap.yaml
+```
+
 ## Secret
 
 ```shell
