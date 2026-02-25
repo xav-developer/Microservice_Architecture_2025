@@ -1,6 +1,7 @@
 profile:
 
     env: laravel-env
+    rr: laravel-rr
 
     ingress:
         enabled: false

@@ -73,3 +73,4 @@ readinessProbe:
     failureThreshold: 5
 
 env:
+rr:

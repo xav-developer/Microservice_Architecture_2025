@@ -27,6 +27,10 @@ spec:
                             mountPath: /var/www/html/.env
                             subPath: .env
                             readOnly: true
+                        -   name: rr
+                            mountPath: /var/www/html/.rr.yaml
+                            subPath: .rr.yaml
+                            readOnly: true
             containers:
                 -   name: {{ .Chart.Name }}
                     image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -56,7 +60,14 @@ spec:
                             mountPath: /var/www/html/.env
                             subPath: .env
                             readOnly: true
+                        -   name: rr
+                            mountPath: /var/www/html/.rr.yaml
+                            subPath: .rr.yaml
+                            readOnly: true
             volumes:
                 -   name: env
                     secret:
                         secretName: {{ .Values.env }}
+                -   name: rr
+                    configMap:
+                        name: {{ .Values.rr }}

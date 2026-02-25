@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: laravel-rr
+data:
+    .rr.yaml: |
+        version: "3"
+        rpc:
+            listen: tcp://127.0.0.1:6001
+        server:
+            command: "php vendor/bin/roadrunner-worker start"
+            env:
+                APP_BASE_PATH: "/var/www/html"
+                LARAVEL_OCTANE: "1"
+            relay: pipes
+        http:
+            address: 0.0.0.0:8000
+            middleware: [
+                "static",
+                "gzip",
+            ]
+            static:
+                dir: "/var/www/html/public"
+                forbid: [
+                    ".php",
+                    ".htaccess",
+                ]
+            gzip:
+                level: 6
+            pool:
+                num_workers: 5
+                supervisor:
+                    exec_ttl: 30s
+        logs:
+            mode: production
+            level: debug
