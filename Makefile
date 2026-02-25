@@ -39,4 +39,7 @@ up:
 down:
 	docker compose down
 
+ps:
+	docker compose ps
+
 restart: down up

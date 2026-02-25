@@ -1,6 +1,6 @@
 services:
 
-    authorization:
+    authorization-http:
         build:
             context: application/authorization
             dockerfile: Dockerfile
@@ -18,7 +18,47 @@ services:
         networks:
             private:
 
-    profile:
+    authorization-queue:
+        build:
+            context: application/authorization
+            dockerfile: Dockerfile
+            target: compose
+            args:
+                UID: ${UID}
+                GID: ${GID}
+        command:
+            - php
+            - artisan
+            - queue:listen
+            - --verbose
+        volumes:
+            - ./application/authorization/html:/var/www/html/:rw
+        depends_on:
+            - postgres
+        networks:
+            private:
+
+    authorization-schedule:
+        build:
+            context: application/authorization
+            dockerfile: Dockerfile
+            target: compose
+            args:
+                UID: ${UID}
+                GID: ${GID}
+        command:
+            - php
+            - artisan
+            - schedule:work
+            - --verbose
+        volumes:
+            - ./application/authorization/html:/var/www/html/:rw
+        depends_on:
+            - postgres
+        networks:
+            private:
+
+    profile-http:
         build:
             context: application/profile
             dockerfile: Dockerfile
@@ -31,6 +71,46 @@ services:
         ports:
             -   target: 8000
                 published: 8002
+        depends_on:
+            - postgres
+        networks:
+            private:
+
+    profile-queue:
+        build:
+            context: application/profile
+            dockerfile: Dockerfile
+            target: compose
+            args:
+                UID: ${UID}
+                GID: ${GID}
+        command:
+            - php
+            - artisan
+            - queue:listen
+            - --verbose
+        volumes:
+            - ./application/profile/html:/var/www/html/:rw
+        depends_on:
+            - postgres
+        networks:
+            private:
+
+    profile-schedule:
+        build:
+            context: application/profile
+            dockerfile: Dockerfile
+            target: compose
+            args:
+                UID: ${UID}
+                GID: ${GID}
+        command:
+            - php
+            - artisan
+            - schedule:work
+            - --verbose
+        volumes:
+            - ./application/profile/html:/var/www/html/:rw
         depends_on:
             - postgres
         networks:
