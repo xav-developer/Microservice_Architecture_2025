@@ -1,22 +1,10 @@
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-    name: authorization
-    namespace: fa
-spec:
-    forwardAuth:
-        address: http://authorization.local/api/me
-        trustForwardHeader: true
-        authResponseHeaders:
-            - X-API-KEY
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
     name: authorization
     namespace: fa
 spec:
-    ingressClassName: traefik
+    ingressClassName: nginx
     rules:
         -   host: authorization.local
             http:
@@ -35,9 +23,10 @@ metadata:
     name: profile
     namespace: fa
     annotations:
-        traefik.ingress.kubernetes.io/router.middlewares: fa-authorization@kubernetescrd
+        nginx.ingress.kubernetes.io/auth-url: http://authorization-authorization.fa.svc.cluster.local/api/me
+        nginx.ingress.kubernetes.io/auth-response-headers: X-API-KEY
 spec:
-    ingressClassName: traefik
+    ingressClassName: nginx
     rules:
         -   host: profile.local
             http:
