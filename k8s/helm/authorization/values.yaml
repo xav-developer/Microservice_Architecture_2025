@@ -4,4 +4,10 @@ authorization:
     rr: laravel-rr
 
     ingress:
-        enabled: false
+        enabled: true
+        className: "nginx"
+        hosts:
+            -   host: arch.homework
+                paths:
+                    -   path: /
+                        pathType: Prefix

@@ -102,14 +102,6 @@ helm upgrade \
   profile k8s/helm/profile
 ```
 
-### Ingress
-
-```shell
-kubectl apply \
-  --namespace fa \
-  --filename k8s/fa.yaml
-```
-
 # Helm uninstall
 
 ```shell
